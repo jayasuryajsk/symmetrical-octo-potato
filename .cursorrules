@@ -1,0 +1,70 @@
+# TenderFlow Phased Roadmap
+
+Here is the phased roadmap to evolve TenderAI into a Cascade‑style writing assistant—an autonomous, multi‑step authoring flow rather than a simple chat. This will live in `.cursorrules` to persist across sessions.
+
+---
+
+## Phase 1 – Core "WritingOrchestrator" & Tools
+1. Define the agent loop (WritingOrchestrator)
+   • Mirror `TenderAiOrchestrator.handleUserInput`, but:
+     – Expose tools like `readSection(filePath, range)`, `writeSection(filePath, range, content)`, `applyPatch(filePath, patch)`.
+     – Track cursor positions or named anchors in a document.
+2. Implement basic tools
+   • **readSection**: load a chunk of text (e.g. chapter, paragraph)
+   • **writeSection**: replace or insert text at a position
+   • **applyPatch**: apply unified diffs
+3. System prompt and JSON spec
+   • Craft a "writing" system prompt to drive outline → draft → revise loops
+   • Define the JSON schema:
+   ```json5
+   {
+     "tool": "readSection"|"writeSection"|"applyPatch"|"DONE",
+     "args": { filePath:string, range?:{start:number,end:number}, content?:string, patch?:string }
+   }
+   ```
+
+## Phase 2 – Document Context Indexer
+1. Chunking & embeddings
+   • Split supported docs (MD, PDF, DOCX) into logical sections.
+   • Build embeddings per section.
+2. On‑demand context retrieval
+   • Expose a `getContext(sectionId, windowSize)` tool.
+3. Cache & update strategy
+   • Re‑index on save or via file‑watcher.
+
+## Phase 3 – UI & Webview Integration
+1. Webview for authoring flows
+   • Replace chat UI with a "WritingView" component showing outline and preview.
+2. Inline diff previews
+   • Render side‑by‑side diffs after each tool call.
+3. Cursor / selection telemetry
+   • Send `{ type: 'cursorChange', filePath, range }` to orchestrator.
+
+## Phase 4 – Multi‑Step Memory & Checkpoints
+1. Checkpoint API
+   • Allow agent to emit snapshots (`createCheckpoint(label, text)`).
+2. Flow management
+   • UI controls: "Back to checkpoint", "Review changes since X".
+   • Persist checkpoint metadata in workspace storage.
+
+## Phase 5 – Feedback & Refinement Loop
+1. Inline feedback tool
+   • `annotateSection(range, comment)` to flag passages.
+2. Human‑in‑the‑loop
+   • "Approve / Reject" buttons on diffs; only commit approved patches.
+
+## Phase 6 – Polish & QA
+1. Styling & UX
+2. Testing
+   • Unit tests for orchestrator logic and tools.
+   • E2E tests driving the webview.
+3. Documentation & Examples
+   • Guides: "How to draft a blog post", "How to revise a report".
+
+---
+
+**Estimated timeline (3–6 weeks)**
+- Weeks 1–2: Phase 1 & 2
+- Weeks 3–4: Phase 3
+- Week 5: Phase 4
+- Week 6: Phase 5–6

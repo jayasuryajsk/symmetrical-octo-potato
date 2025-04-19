@@ -177,6 +177,9 @@ import './contrib/emergencyAlert/electron-sandbox/emergencyAlert.contribution.js
 // MCP
 import './contrib/mcp/electron-sandbox/mcp.contribution.js';
 
+// TenderAI: register our AuxiliaryBar contribution
+import './contrib/tenderai/browser/tenderai.contribution.js';
+
 //#endregion
 
 

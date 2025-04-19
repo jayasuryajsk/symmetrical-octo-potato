@@ -153,6 +153,9 @@ import './contrib/terminal/browser/terminalInstanceService.js';
 // Tasks
 import './contrib/tasks/browser/taskService.js';
 
+// TenderAI: register our AuxiliaryBar contribution
+import './contrib/tenderai/browser/tenderai.contribution.js';
+
 // Tags
 import './contrib/tags/browser/workspaceTagsService.js';
 

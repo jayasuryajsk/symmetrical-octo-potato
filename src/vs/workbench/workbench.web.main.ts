@@ -3,7 +3,6 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-
 // ####################################
 // ###                              ###
 // ### !!! PLEASE DO NOT MODIFY !!! ###
@@ -11,6 +10,9 @@
 // ####################################
 
 // TODO@esm remove me once we stop supporting our web-esm-bridge
+
+// BrowserMain is provided by the AMD-loaded vs/web-api! module
+declare const BrowserMain: any;
 
 (function () {
 
@@ -100,4 +102,7 @@
 			Object.assign(exports, webApi);
 		}
 	);
+
+	// Startup
+	new BrowserMain().main();
 })();
